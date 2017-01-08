@@ -6,12 +6,12 @@
 package ranttu.rapid.prologcpp.parser.token;
 
 /**
- * a prolog symol
+ * a prolog symbol
  *
  * @author rapidhere@gmail.com
  * @version $id: Symbol.java, v0.1 2017/1/6 dongwei.dq Exp $
  */
-@TokenPattern("\\w*[a-zA-z]+[a-zA-z0-9]*\\w*")
+@TokenPattern("\\s*[a-zA-z]+[a-zA-z0-9]*\\s*")
 public class Symbol extends BasePrologToken<String> {
     public Symbol(int lineNo, int column, String value) {
         super(lineNo, column, value);

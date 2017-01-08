@@ -13,9 +13,9 @@ package ranttu.rapid.prologcpp.parser.token;
  * @author rapidhere@gmail.com
  * @version $id: Number.java, v0.1 2017/1/6 dongwei.dq Exp $
  */
-@TokenPattern("\\w*\\d+\\w*")
+@TokenPattern("\\s*\\d+\\s*")
 public class Number extends BasePrologToken<java.lang.Number> {
-    Number(int lineNo, int column, String raw) {
+    public Number(int lineNo, int column, String raw) {
         super(lineNo, column, raw);
     }
 

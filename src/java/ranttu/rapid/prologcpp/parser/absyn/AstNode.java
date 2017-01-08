@@ -12,9 +12,16 @@ package ranttu.rapid.prologcpp.parser.absyn;
  * @version $id: AstNode.java, v0.1 2017/1/6 dongwei.dq Exp $
  */
 abstract public class AstNode {
-    /** the line no of the node */
-    public int lineNo;
+    public AstNode() {
+    }
 
-    /** the column of the node */
-    public int column;
+    /**
+     * get the lineNo of current node
+     */
+    public abstract int getLineNo();
+
+    /**
+     * get the column of current node
+     */
+    public abstract int getColumn();
 }

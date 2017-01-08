@@ -21,10 +21,14 @@ abstract public class BasePrologToken<T> {
     /** the value of the token*/
     protected T value;
 
-    BasePrologToken(int lineNo, int column, String raw) {
+    public BasePrologToken(int lineNo, int column, String raw) {
         this.lineNo = lineNo;
         this.column = column;
         this.value = castValue(raw);
+    }
+
+    final public boolean is(Class<? extends BasePrologToken> clazz) {
+        return clazz.isAssignableFrom(getClass());
     }
 
     @SuppressWarnings("unchecked")

@@ -11,7 +11,7 @@ package ranttu.rapid.prologcpp.parser.token;
  * @author rapidhere@gmail.com
  * @version $id: Comma.java, v0.1 2017/1/6 dongwei.dq Exp $
  */
-@TokenPattern("\\w*,\\w*")
+@TokenPattern("\\s*,\\s*")
 public class Comma extends BasePrologToken<Character> {
     public Comma(int lineNo, int column, String raw) {
         super(lineNo, column, raw);
