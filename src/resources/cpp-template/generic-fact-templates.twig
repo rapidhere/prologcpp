@@ -1,0 +1,12 @@
+{% for functor in functors.values() -%}
+template <
+    {%- for i in [0..functor.getSize() - 1] -%}
+    class T{{i}},
+    {%- endfor -%}
+int _i>
+struct _{{ functor.getId() }}_{{ functor.getSize() }} {
+    {% for i in [0..functor.getSize()-1] -%}
+    typedef pack<> v{{i}};
+{% endfor -%}
+};
+{% endfor %}

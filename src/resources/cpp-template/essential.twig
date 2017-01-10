@@ -1,0 +1,22 @@
+struct QueryAtom {};
+
+template <int atom_idx>
+struct Atom {};
+
+template <int... src>
+struct pack {
+    static constexpr int data[] = { src... };
+};
+
+template <class T1, class T2>
+struct mergePack {};
+
+template <
+    template<int...> class T1,
+    template<int...> class T2,
+    int... src1,
+    int... src2
+>
+struct mergePack <T1<src1...>, T2<src2...>> {
+    typedef pack<src1..., src2...> ret;
+};

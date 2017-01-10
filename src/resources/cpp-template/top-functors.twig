@@ -1,0 +1,29 @@
+{% for functor in context.functors.values() -%}
+
+template <
+    {%- for i in [0..functor.getSize() - 1] -%}
+    class T{{i}},
+    {%- endfor -%}
+int _i={{ functor.getItemCount() }}>
+struct {{ functor.getId() }}_{{ functor.getSize() }} {
+    {% for i in [0..functor.getSize()-1] -%}
+    typedef typename mergePack<typename _{{ functor.getId() }}_{{ functor.getSize() }}<
+        {%- for j in [0..functor.getSize() - 1] -%} T{{j}}, {%- endfor -%}
+        _i>::v{{ i }}, typename {{ functor.getId() }}_{{ functor.getSize() }}<
+        {%- for j in [0..functor.getSize() - 1] -%} T{{j}}, {%- endfor -%}
+        _i-1>::v{{ i }}>::ret v0;
+{% endfor -%}
+};
+
+template <
+    {%- for i in [0..functor.getSize() - 1] -%}
+    class T{{i}} {%- if not loop.last -%}, {% endif %}
+    {%- endfor -%}
+>
+struct {{ functor.getId() }}_{{ functor.getSize() }} {
+    {% for i in [0..functor.getSize()-1] -%}
+    typedef pack<> v{{i}};
+{% endfor -%}
+};
+
+{% endfor %}
