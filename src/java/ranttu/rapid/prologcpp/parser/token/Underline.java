@@ -11,7 +11,7 @@ package ranttu.rapid.prologcpp.parser.token;
  * @author rapidhere@gmail.com
  * @version $id: Underline.java, v0.1 2017/1/6 dongwei.dq Exp $
  */
-@TokenPattern("\\s*_\\s*")
+@TokenPattern("_")
 public class Underline extends BasePrologToken<Character> {
     public Underline(int lineNo, int column, String raw) {
         super(lineNo, column, raw);

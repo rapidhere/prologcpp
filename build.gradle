@@ -35,6 +35,6 @@ sourceSets {
 // artifacts
 jar {
     manifest {
-        attributes('CompileMain-Class': 'ranttu.rapid.jsvm.CompileMain')
+        attributes('CompileMain-Class': 'ranttu.rapid.prologcpp.CompileMain')
     }
 }

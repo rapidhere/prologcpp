@@ -11,7 +11,7 @@ package ranttu.rapid.prologcpp.parser.token;
  * @author rapidhere@gmail.com
  * @version $id: LeftParenthesis.java, v0.1 2017/1/8 dongwei.dq Exp $
  */
-@TokenPattern("\\s*\\)\\s*")
+@TokenPattern("\\)")
 public class RightParenthesis extends BasePrologToken<Character> {
     public RightParenthesis(int lineNo, int column, String raw) {
         super(lineNo, column, raw);

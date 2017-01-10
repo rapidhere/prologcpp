@@ -15,14 +15,14 @@ import java.util.List;
  * a prolog fact statement
  *
  * @author rapidhere@gmail.com
- * @version $id: Fact.java, v0.1 2017/1/8 dongwei.dq Exp $
+ * @version $id: FactNode.java, v0.1 2017/1/8 dongwei.dq Exp $
  */
-public class Fact extends AstNode{
-    private Symbol factId;
+public class FactNode extends AstNode {
+    private Symbol       factId;
 
     private List<Number> factArgument;
 
-    public Fact(Symbol factId) {
+    public FactNode(Symbol factId) {
         this.factId = factId;
         this.factArgument = new ArrayList<>();
     }

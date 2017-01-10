@@ -14,20 +14,20 @@ import java.util.List;
  * the base prolog program
  *
  * @author rapidhere@gmail.com
- * @version $id: Program.java, v0.1 2017/1/8 dongwei.dq Exp $
+ * @version $id: ProgramNode.java, v0.1 2017/1/8 dongwei.dq Exp $
  */
-public class Program extends AstNode {
-    private List<Fact> body;
+public class ProgramNode extends AstNode {
+    private List<FactNode> body;
 
-    public Program() {
+    public ProgramNode() {
         body = new ArrayList<>();
     }
 
-    public void add(Fact fact) {
+    public void add(FactNode fact) {
         body.add(fact);
     }
 
-    public List<Fact> getBody() {
+    public List<FactNode> getBody() {
         return ImmutableList.copyOf(body);
     }
 

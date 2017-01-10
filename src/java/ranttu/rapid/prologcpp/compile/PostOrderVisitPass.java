@@ -5,8 +5,8 @@
  */
 package ranttu.rapid.prologcpp.compile;
 
-import ranttu.rapid.prologcpp.parser.absyn.Fact;
-import ranttu.rapid.prologcpp.parser.absyn.Program;
+import ranttu.rapid.prologcpp.parser.absyn.FactNode;
+import ranttu.rapid.prologcpp.parser.absyn.ProgramNode;
 
 /**
  * visit nodes in post-order on ast
@@ -26,12 +26,12 @@ abstract public class PostOrderVisitPass implements Pass {
     }
 
     // ~ visit methods
-    private void visit(Program program) {
+    private void visit(ProgramNode program) {
         program.getBody().forEach(this::visit);
         on(program);
     }
 
-    private void visit(Fact fact) {
+    private void visit(FactNode fact) {
         on(fact);
     }
 
@@ -39,6 +39,6 @@ abstract public class PostOrderVisitPass implements Pass {
     protected void init() {}
 
     // ~ visit entry
-    protected void on(Program program) {}
-    protected void on(Fact fact) {}
+    protected void on(ProgramNode program) {}
+    protected void on(FactNode fact) {}
 }

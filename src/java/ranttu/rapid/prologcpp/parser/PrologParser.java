@@ -6,8 +6,8 @@
 package ranttu.rapid.prologcpp.parser;
 
 import ranttu.rapid.prologcpp.exp.UnexpectedToken;
-import ranttu.rapid.prologcpp.parser.absyn.Fact;
-import ranttu.rapid.prologcpp.parser.absyn.Program;
+import ranttu.rapid.prologcpp.parser.absyn.FactNode;
+import ranttu.rapid.prologcpp.parser.absyn.ProgramNode;
 import ranttu.rapid.prologcpp.parser.token.BasePrologToken;
 import ranttu.rapid.prologcpp.parser.token.Comma;
 import ranttu.rapid.prologcpp.parser.token.Dot;
@@ -33,12 +33,12 @@ public class PrologParser {
      * parse the code and return the parsed abstract syntax tree
      * @return the root of abstract syntax tree
      */
-    public Program parse() {
+    public ProgramNode parse() {
         return parseProgram();
     }
 
-    protected Program parseProgram() {
-        Program program = new Program();
+    protected ProgramNode parseProgram() {
+        ProgramNode program = new ProgramNode();
         while (lexer.hasNext()) {
             program.add(parseFact());
         }
@@ -46,9 +46,9 @@ public class PrologParser {
         return program;
     }
 
-    protected Fact parseFact() {
+    protected FactNode parseFact() {
         Symbol factId = lexer.nextToken(Symbol.class);
-        Fact fact = new Fact(factId);
+        FactNode fact = new FactNode(factId);
 
         lexer.nextToken(LeftParenthesis.class);
 

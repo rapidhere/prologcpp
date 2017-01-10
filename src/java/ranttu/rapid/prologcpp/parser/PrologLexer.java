@@ -45,7 +45,7 @@ public class PrologLexer {
 
         this.currentTokenIndex = 0;
         this.currentColumn = 0;
-        this.currentLineNo = 0;
+        this.currentLineNo = 1;
     }
 
     /**
@@ -108,7 +108,7 @@ public class PrologLexer {
 
             if (ch == '\'' || ch == '"') {
                 return new PrologString(currentLineNo, currentColumn, onStateString(ch));
-            } else if (ch == '\n') {
+            } else if (Pattern.matches("\\s+", "" + ch)) {
                 incPos(ch);
             } else {
                 for (Class<? extends BasePrologToken> tokenCls : TOKENS) {
@@ -184,9 +184,9 @@ public class PrologLexer {
     private void incPos(char ch) {
         if (ch == '\n') {
             currentLineNo++;
-            currentTokenIndex = 0;
+            currentColumn = 0;
         } else {
-            currentTokenIndex++;
+            currentColumn++;
         }
 
         currentTokenIndex++;

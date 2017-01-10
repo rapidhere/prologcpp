@@ -6,10 +6,10 @@
 package ranttu.rapid.prologcpp.compile;
 
 import com.google.common.collect.ImmutableList;
-import ranttu.rapid.prologcpp.compile.pass.CollectFact;
+import ranttu.rapid.prologcpp.compile.pass.Collect;
 import ranttu.rapid.prologcpp.compile.pass.GenerateCppCode;
 import ranttu.rapid.prologcpp.parser.PrologParser;
-import ranttu.rapid.prologcpp.parser.absyn.Program;
+import ranttu.rapid.prologcpp.parser.absyn.ProgramNode;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class Prolog2CppCompiler {
      */
     public String compile(String prologCode) {
         PrologParser parser = new PrologParser(prologCode);
-        Program prologProgram = parser.parse();
+        ProgramNode prologProgram = parser.parse();
 
         // set up context
         CompilingContext context = new CompilingContext();
@@ -42,12 +42,6 @@ public class Prolog2CppCompiler {
 
     // compile passes
     private final static List<Pass> PASSES = ImmutableList.of(
-        new CollectFact(),
+        new Collect(),
         new GenerateCppCode());
-
-
-    // ~ tmp test
-    public static void main(String args[]) {
-        System.out.println(new Prolog2CppCompiler().compile("f(1)."));
-    }
 }

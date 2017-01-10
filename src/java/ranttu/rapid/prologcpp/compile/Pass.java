@@ -14,6 +14,7 @@ package ranttu.rapid.prologcpp.compile;
 public interface Pass {
     /**
      * process a pass
+     * @param context the compiling context
      */
     void process(CompilingContext context);
 }
