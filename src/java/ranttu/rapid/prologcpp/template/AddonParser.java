@@ -51,7 +51,7 @@ class AddonParser extends org.jtwig.parser.parboiled.node.AddonParser {
                         spacingParser.Spacing(),
                         lexicParser.Keyword(KEYWORD_TAB),
                         spacingParser.Spacing(),
-                        lexicParser.CharRange(':', ':'),
+                        lexicParser.Ch(':'),
                         spacingParser.Spacing(),
                         anyExpressionParser.ExpressionRule()
                     ),
