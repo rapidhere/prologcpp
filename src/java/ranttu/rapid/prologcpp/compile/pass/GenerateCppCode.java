@@ -27,15 +27,15 @@ public class GenerateCppCode extends PostOrderVisitPass {
         // set builder
         T.setBuilder(builder);
 
-        T.essential().render();
-        T.constantTable().with("context", context).render();
-        T.genericFactTemplates().with("functors", context.functors).render();
+        T.Essential.render();
+        T.ConstantTable.with("context", context).render();
+        T.GenericFactTemplates.with("functors", context.functors).render();
     }
 
     @Override
     protected void on(ProgramNode program) {
         // generate true functors
-        T.topFunctors().with("context", context).render();
+        T.TopFunctors.with("context", context).render();
 
         // get result
         context.compiledCode = builder.toString();
@@ -48,7 +48,7 @@ public class GenerateCppCode extends PostOrderVisitPass {
             .size());
         functor.incItemCount();
 
-        T.subFunctor().with("functor", functor).with("fact", fact).with("context", context)
+        T.SubFunctor.with("functor", functor).with("fact", fact).with("context", context)
             .render();
     }
 }

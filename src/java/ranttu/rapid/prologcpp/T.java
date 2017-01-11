@@ -28,25 +28,12 @@ final public class T {
     }
 
     // ~~~ templates
-    public static RTemplate essential() {
-        return new RTemplate("essential");
-    }
-
-    public static RTemplate constantTable() {
-        return new RTemplate("constant-table");
-    }
-
-    public static RTemplate genericFactTemplates() {
-        return new RTemplate("generic-fact-templates");
-    }
-
-    public static RTemplate subFunctor() {
-        return new RTemplate("sub-functor");
-    }
-
-    public static RTemplate topFunctors() {
-        return new RTemplate("top-functors");
-    }
+    public static final RTemplate
+        Essential = new RTemplate("essential"),
+        ConstantTable = new RTemplate("constant-table"),
+        GenericFactTemplates = new RTemplate("generic-fact-templates"),
+        SubFunctor = new RTemplate("sub-functor"),
+        TopFunctors = new RTemplate("top-functors");
 
     // ~~~ chain class
     public static class RTemplate {
@@ -58,13 +45,20 @@ final public class T {
             model = JtwigModel.newModel();
         }
 
+        /**
+         * add value to model
+         */
         final public RTemplate with(String key, Object value) {
             model.with(key, value);
             return this;
         }
 
+        /**
+         * render and clear model
+         */
         final public void render() {
             builder.append(template.render(model));
+            model = JtwigModel.newModel();
         }
     }
 }

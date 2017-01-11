@@ -13,15 +13,19 @@ import ranttu.rapid.prologcpp.exp.AssertError;
  * @author rapidhere@gmail.com
  * @version $id: $.java, v0.1 2017/1/10 dongwei.dq Exp $
  */
-public interface $ {
+final public class  $ {
+    // forbidden constructor
+    private $() {
+    }
+
     // ~~~ common utils
     @SuppressWarnings("unchecked")
-    static <T> T required(Object o) {
+    public static <T> T required(Object o) {
         return (T) o;
     }
 
     // ~~~ assert utils
-    static <T> T notNull(T o) {
+    public static <T> T notNull(T o) {
         if(o == null) {
             throw new AssertError("object should not be null");
         }
@@ -29,7 +33,7 @@ public interface $ {
         return o;
     }
 
-    static <T> T shouldNotReach() {
+    public static <T> T shouldNotReach() {
         throw new AssertError("should not reach this");
     }
 }
