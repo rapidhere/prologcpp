@@ -5,7 +5,7 @@
  */
 package ranttu.rapid.prologcpp.compile.pass;
 
-import ranttu.rapid.prologcpp.T;
+import ranttu.rapid.prologcpp.template.T;
 import ranttu.rapid.prologcpp.compile.PostOrderVisitPass;
 import ranttu.rapid.prologcpp.compile.struct.Functor;
 import ranttu.rapid.prologcpp.parser.absyn.FactNode;
@@ -29,13 +29,17 @@ public class GenerateCppCode extends PostOrderVisitPass {
 
         T.Essential.render();
         T.ConstantTable.with("context", context).render();
-        T.GenericFactTemplates.with("functors", context.functors).render();
+        for(Functor functor: context.functors.values()) {
+            T.GenericFunctor.with("functor", functor).render();
+        }
     }
 
     @Override
     protected void on(ProgramNode program) {
         // generate true functors
-        T.TopFunctors.with("context", context).render();
+        for(Functor functor: context.functors.values()) {
+            T.TopFunctor.with("functor", functor).render();
+        }
 
         // get result
         context.compiledCode = builder.toString();

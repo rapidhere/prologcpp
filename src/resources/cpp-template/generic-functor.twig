@@ -1,0 +1,10 @@
+{%- import 'M.twig' as M -%}
+
+template <{{ M.tHeader([0..functor.getSize()-1], 'class T%d', 'int _i') }}>
+struct {{ M.subFunctorId(functor) }} {
+    {% for i in [0..functor.getSize()-1] -%}
+        {% ol %}
+        typedef pack<> v{{i}};
+        {% endol %}
+    {%- endfor -%}
+};

@@ -17,6 +17,6 @@ template <
     int... src1,
     int... src2
 >
-struct mergePack <T1<src1...>, T2<src2...>> {
+struct mergePack<T1<src1...>, T2<src2...>> {
     typedef pack<src1..., src2...> ret;
 };

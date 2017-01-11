@@ -1,12 +1,16 @@
+{%- import 'M.twig' as M -%}
+
 template<>
-struct _{{functor.getId()}}_{{functor.getSize()}} <
+struct {{ M.subFunctorId(functor) }}<
     {%- for number in fact.getArguments() -%}
     Atom<{{ context.getConstantIndex(number.getInt()) }}>,
     {%- endfor -%}
     {{- functor.getItemCount() -}}
 > {
     {% for number in fact.getArguments() -%}
-    typedef pack<{{ context.getConstantIndex(number.getInt()) }}> v{{ loop.index0 }};
-{% endfor -%}
+        {% ol %}
+        typedef pack<{{ context.getConstantIndex(number.getInt()) }}> v{{ loop.index0 }};
+        {% endol %}
+    {%- endfor -%}
 };
 
