@@ -11,11 +11,18 @@
 {%- macro tHeader(list, pattern, tail) -%}
     {%- for i in list -%}
         {{ format(pattern, i) }}
-        {%- if not loop.last -%}
-            ,
-        {%- endif -%}
+        {%- if not (loop.last) -%},{% endif %}
     {%- endfor -%}
     {%- if length(tail) > 0 -%}
-        , {{ tail }}
+        ,{{ tail }}
     {%- endif -%}
 {%- endmacro -%}
+
+{%- macro atom(constant, context, Q) -%}
+    {%- if Q -%}
+        QueryAtom
+    {%- else -%}
+        Atom<{{ context.getConstantIndex(constant.getInt()) }}>
+    {%- endif -%}
+{%- endmacro -%}
+

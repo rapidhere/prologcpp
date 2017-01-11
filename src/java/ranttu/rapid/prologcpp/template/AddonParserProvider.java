@@ -23,6 +23,9 @@ class AddonParserProvider implements org.jtwig.parser.addon.AddonParserProvider 
 
     @Override
     public Collection<String> keywords() {
-        return asList(AddonParser.KEYWORD_ONELINE, AddonParser.KEYWORD_END_ONELINE);
+        return asList(
+            AddonParser.KEYWORD_ONELINE,
+            AddonParser.KEYWORD_END_ONELINE,
+            AddonParser.KEYWORD_TAB);
     }
 }

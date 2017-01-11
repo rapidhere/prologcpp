@@ -2,21 +2,21 @@
 
 template <{{ M.tHeader([0..functor.getSize()-1], 'class T%d', format('int _i=%d', functor.getItemCount())) }}>
 struct {{ M.topFunctorId(functor) }} {
-    {% for i in [0..functor.getSize()-1] -%}
-        {% ol %}
-        typedef typename mergePack<
-                typename {{ M.subFunctorId(functor) }}<{{ M.tHeader([0..functor.getSize()-1], 'T%d', '_i') }}>::v{{ i }},
-                typename {{ M.topFunctorId(functor) }}<{{ M.tHeader([0..functor.getSize()-1], 'T%d', '_i-1') }}>::v{{ i }}
-            >::ret v{{ i }};
-        {% endol %}
-    {%- endfor -%}
+{% for i in [0..functor.getSize()-1] -%}
+    {% ol tab:4 %}
+    typedef typename mergePack<
+            typename {{ M.subFunctorId(functor) }}<{{ M.tHeader([0..functor.getSize()-1], 'T%d', '_i') }}>::v{{ i }},
+            typename {{ M.topFunctorId(functor) }}<{{ M.tHeader([0..functor.getSize()-1], 'T%d', '_i-1') }}>::v{{ i }}
+        >::ret v{{ i }};
+    {% endol %}
+{%- endfor -%}
 };
 
 template <{{ M.tHeader([0..functor.getSize()-1], 'class T%d') }}>
 struct {{ M.topFunctorId(functor) }}<{{ M.tHeader([0..functor.getSize()-1], 'T%d', '0') }}> {
-    {% for i in [0..functor.getSize()-1] -%}
-        {% ol %}
-        typedef pack<> v{{i}};
-        {% endol %}
-    {%- endfor -%}
+{% for i in [0..functor.getSize()-1] -%}
+    {% ol tab:4 %}
+    typedef pack<> v{{i}};
+    {% endol %}
+{%- endfor -%}
 };

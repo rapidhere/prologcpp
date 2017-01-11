@@ -13,7 +13,7 @@ import ranttu.rapid.prologcpp.exp.AssertError;
  * @author rapidhere@gmail.com
  * @version $id: $.java, v0.1 2017/1/10 dongwei.dq Exp $
  */
-final public class  $ {
+final public class $ {
     // forbidden constructor
     private $() {
     }

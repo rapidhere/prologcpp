@@ -10,6 +10,7 @@ import org.jtwig.parser.parboiled.base.LexicParser;
 import org.jtwig.parser.parboiled.base.LimitsParser;
 import org.jtwig.parser.parboiled.base.PositionTrackerParser;
 import org.jtwig.parser.parboiled.base.SpacingParser;
+import org.jtwig.parser.parboiled.expression.AnyExpressionParser;
 import org.jtwig.parser.parboiled.node.CompositeNodeParser;
 import org.parboiled.Rule;
 
@@ -22,6 +23,7 @@ import org.parboiled.Rule;
 class AddonParser extends org.jtwig.parser.parboiled.node.AddonParser {
     static final String KEYWORD_ONELINE = "ol";
     static final String KEYWORD_END_ONELINE = "endol";
+    static final String KEYWORD_TAB = "tab";
 
     public AddonParser(ParserContext context) {
         super(AddonParser.class, context);
@@ -33,6 +35,7 @@ class AddonParser extends org.jtwig.parser.parboiled.node.AddonParser {
         LimitsParser limitsParser = parserContext().parser(LimitsParser.class);
         SpacingParser spacingParser = parserContext().parser(SpacingParser.class);
         LexicParser lexicParser = parserContext().parser(LexicParser.class);
+        AnyExpressionParser anyExpressionParser = parserContext().parser(AnyExpressionParser.class);
         CompositeNodeParser compositeNodeParser = parserContext().parser(CompositeNodeParser.class);
 
         return Sequence(
@@ -42,6 +45,19 @@ class AddonParser extends org.jtwig.parser.parboiled.node.AddonParser {
                 limitsParser.startCode(),
                 spacingParser.Spacing(),
                 lexicParser.Keyword(KEYWORD_ONELINE),
+
+                FirstOf(
+                    Sequence(
+                        spacingParser.Spacing(),
+                        lexicParser.Keyword(KEYWORD_TAB),
+                        spacingParser.Spacing(),
+                        lexicParser.CharRange(':', ':'),
+                        spacingParser.Spacing(),
+                        anyExpressionParser.ExpressionRule()
+                    ),
+                    anyExpressionParser.push(null)
+                ),
+
                 spacingParser.Spacing(),
                 limitsParser.endCode()
             ),
@@ -56,7 +72,10 @@ class AddonParser extends org.jtwig.parser.parboiled.node.AddonParser {
                 limitsParser.endCode()
             ),
 
-            push(new OnelineNode(positionTrackerParser.pop(1), compositeNodeParser.pop()))
+            push(new OnelineNode(
+                positionTrackerParser.pop(2),
+                compositeNodeParser.pop(),
+                anyExpressionParser.pop()))
         );
     }
 }

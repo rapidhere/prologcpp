@@ -13,6 +13,8 @@ import org.jtwig.renderable.Renderable;
 import org.jtwig.renderable.StringBuilderRenderResult;
 import org.jtwig.renderable.impl.StringRenderable;
 
+import java.math.BigDecimal;
+
 /**
  * render for online node
  *
@@ -28,13 +30,32 @@ class OnelineNodeRender implements NodeRender<OnelineNode> {
         Renderable subRender = env.getRenderEnvironment().getRenderNodeService()
             .render(renderRequest, node.getContent());
 
+        int tabSize;
+        if(node.getTabExpression().isPresent()) {
+            Object val = env.getRenderEnvironment().getCalculateExpressionService().calculate(
+                renderRequest,node.getTabExpression().get());
+
+            if(! (val instanceof BigDecimal)) {
+                tabSize = 0;
+            } else {
+                tabSize = ((BigDecimal)val).toBigInteger().intValue();
+            }
+        } else {
+            tabSize = 0;
+        }
+
         String content = subRender.appendTo(new StringBuilderRenderResult())
             .content().trim();
 
-        return new StringRenderable(trimNewline(content), NoneEscapeEngine.instance());
+        return new StringRenderable(trimNewline(content, tabSize), NoneEscapeEngine.instance());
     }
 
-    private String trimNewline(String raw) {
-        return raw.replaceAll("\r*\n\\s*", "") + "\n";
+    private String trimNewline(String raw, int tabSize) {
+        String tab = "";
+        for(int i = 0;i < tabSize;i ++) {
+            tab += " ";
+        }
+
+        return tab + raw.replaceAll("\r*\n\\s*", "") + "\n";
     }
 }

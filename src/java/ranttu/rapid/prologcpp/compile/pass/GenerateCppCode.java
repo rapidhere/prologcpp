@@ -11,6 +11,9 @@ import ranttu.rapid.prologcpp.compile.struct.Functor;
 import ranttu.rapid.prologcpp.parser.absyn.FactNode;
 import ranttu.rapid.prologcpp.parser.absyn.ProgramNode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * the pass generating cpp code
  *
@@ -52,7 +55,18 @@ public class GenerateCppCode extends PostOrderVisitPass {
             .size());
         functor.incItemCount();
 
-        T.SubFunctor.with("functor", functor).with("fact", fact).with("context", context)
-            .render();
+        for(int mask = 0;mask < (1 << functor.getSize());mask ++) {
+            List<Boolean> q = new ArrayList<>();
+            for(int i = 0;i < functor.getSize();i ++) {
+                q.add(((mask >> i) & 1) == 1);
+            }
+
+            T.SubFunctor
+                .with("functor", functor)
+                .with("args", fact.getArguments())
+                .with("context", context)
+                .with("q", q)
+                .render();
+        }
     }
 }

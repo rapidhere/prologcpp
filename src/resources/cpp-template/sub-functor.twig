@@ -2,15 +2,15 @@
 
 template<>
 struct {{ M.subFunctorId(functor) }}<
-    {%- for number in fact.getArguments() -%}
-    Atom<{{ context.getConstantIndex(number.getInt()) }}>,
+    {%- for const in args -%}
+        {{ M.atom(const, context, q[loop.index0]) }},
     {%- endfor -%}
     {{- functor.getItemCount() -}}
 > {
-    {% for number in fact.getArguments() -%}
-        {% ol %}
-        typedef pack<{{ context.getConstantIndex(number.getInt()) }}> v{{ loop.index0 }};
-        {% endol %}
-    {%- endfor -%}
+{% for const in args -%}
+    {% ol tab:4 %}
+    typedef pack<{{ context.getConstantIndex(const.getInt()) }}> v{{ loop.index0 }};
+    {% endol %}
+{%- endfor -%}
 };
 
