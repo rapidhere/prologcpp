@@ -2,9 +2,12 @@
 
 template <{{ M.tHeader([0..functor.getSize()-1], 'class T%d', 'int _i') }}>
 struct {{ M.subFunctorId(functor) }} {
-{% for i in [0..functor.getSize()-1] -%}
-    {% ol tab:4 %}
-    typedef pack<> v{{i}};
+    template <int which>
+    {% ol %}
+    using v = typename at<which
+        {% for i in [0..functor.getSize()-1] -%}
+            , pack<>
+        {%- endfor -%}
+    >::t;
     {% endol %}
-{%- endfor -%}
 };

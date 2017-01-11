@@ -20,3 +20,17 @@ template <
 struct mergePack<T1<src1...>, T2<src2...>> {
     typedef pack<src1..., src2...> ret;
 };
+
+template <int i, class... vals> struct at;
+
+template <int i, class head, class...rest>
+struct at<i, head, rest...> {
+    typedef typename v<i - 1, rest...>::t t;
+};
+
+template <class head, class...rest>
+struct at<0, head, rest...> {
+    typedef head t;
+};
+
+template <int i> struct at<i> {};
