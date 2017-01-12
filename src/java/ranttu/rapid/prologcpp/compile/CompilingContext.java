@@ -53,8 +53,10 @@ public class CompilingContext {
      * add a constant to context
      */
     public void addConstant(Object constantValue) {
-        int size = constants.size();
-        constants.put(constantValue, size);
+        if(! constants.containsKey(constantValue)) {
+            int size = constants.size() + 1;
+            constants.put(constantValue, size);
+        }
     }
 
     /**

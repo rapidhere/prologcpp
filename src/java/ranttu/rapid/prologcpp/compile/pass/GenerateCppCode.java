@@ -11,6 +11,7 @@ import ranttu.rapid.prologcpp.compile.struct.Functor;
 import ranttu.rapid.prologcpp.parser.absyn.FactNode;
 import ranttu.rapid.prologcpp.parser.absyn.ProgramNode;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,14 +22,14 @@ import java.util.List;
  * @version $id: GenerateCppCode.java, v0.1 2017/1/8 dongwei.dq Exp $
  */
 public class GenerateCppCode extends PostOrderVisitPass {
-    private StringBuilder builder;
+    private StringWriter writer;
 
     @Override
     protected void init() {
         // clear
-        builder = new StringBuilder();
+        writer = new StringWriter();
         // set builder
-        T.setBuilder(builder);
+        T.setWriter(writer);
 
         T.Essential.render();
         T.ConstantTable.with("context", context).render();
@@ -45,7 +46,7 @@ public class GenerateCppCode extends PostOrderVisitPass {
         }
 
         // get result
-        context.compiledCode = builder.toString();
+        context.compiledCode = writer.toString();
     }
 
     @Override

@@ -2,22 +2,29 @@
 #set($fSize = $functor.size - 1)##
 #set($fList = [0..$fSize])##
 
-template <#tHeader($fList, 'class T%d', 'int _i='$functor.getItemCount())>
+template <#tHeader($fList, 'class T%d', $String.format("int _i=%d", $functor.getItemCount()))>
 struct #topFunctorId($functor) {
 #foreach($i in $fList)
+    template<int which>
     #ol()
-    typedef typename mergePack<
-        typename #subFunctorId($functor)<#tHeader($fList, 'T%d', '_i')>::v$i,
-        typename #topFunctorId($functor)<#tHeader($fList, 'T%d', '_i-1')>::v$i
-    >::ret v$i;
+    using v = typename mergePack<
+        typename #subFunctorId($functor)<#tHeader($fList, 'T%d', '_i, which')>::v,
+        typename #topFunctorId($functor)<#tHeader($fList, 'T%d', '_i-1')>::v<which>
+    >::ret;
     #end
-
 #end
+
 };
 
 template <#tHeader($fList, 'class T%d')>
 struct #topFunctorId($functor) <#tHeader($fList, 'T%d', '0')> {
-#foreach($i in $fList)
-    typedef pack<> v$i;
-#end
+    template<int which>
+    #ol()
+    using v = typename at<which
+        #foreach($i in $fList)
+            , pack<>
+        #end
+    >::t;
+    #end
+
 };

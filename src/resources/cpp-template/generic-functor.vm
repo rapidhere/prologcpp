@@ -2,15 +2,14 @@
 #set($fSize = $functor.size - 1)##
 #set($fList = [0..$fSize])##
 
-template <#tHeader($fList, 'class T%d', 'int _i')>
+template <#tHeader($fList, 'class T%d', 'int _i, int which')>
 struct #subFunctorId($functor) {
-    template <int which>
     #ol()
-    using v = typename at<which
+    typedef typename at<which
         #foreach($i in $fList)
             ,pack<>
         #end
-    >::t;
+    >::t v;
     #end
 
 };

@@ -9,7 +9,6 @@ import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
-import org.apache.velocity.runtime.directive.Directive;
 import org.apache.velocity.runtime.parser.node.ASTBlock;
 import org.apache.velocity.runtime.parser.node.Node;
 
@@ -23,17 +22,9 @@ import java.io.Writer;
  * @author rapidhere@gmail.com
  * @version $id: OnelineDirective.java, v0.1 2017/1/12 dongwei.dq Exp $
  */
-public class OnelineDirective extends Directive {
-    @Override
-    public String getName() {
-        return "ol";
-    }
-
-    @Override
-    public int getType() {
-        return BLOCK;
-    }
-
+@DirectiveTag("ol")
+@DirectiveType(DirectiveType.BLOCK)
+public class OnelineDirective extends RVelocityDirective {
     @Override
     public boolean render(InternalContextAdapter context, Writer writer, Node node)
                                                                                    throws IOException,

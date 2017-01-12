@@ -10,6 +10,8 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+import ranttu.rapid.prologcpp.$;
+import ranttu.rapid.prologcpp.exp.PrologCppException;
 
 import java.io.StringWriter;
 
@@ -26,10 +28,10 @@ final public class T {
 
     // ~ builder in context
     // TODO: support multi-thread
-    private static StringBuilder builder;
+    private static StringWriter writer;
 
-    public static void setBuilder(StringBuilder _builder) {
-        builder = _builder;
+    public static void setWriter(StringWriter _writer) {
+        writer = _writer;
     }
 
     // ~~~ templates
@@ -39,6 +41,7 @@ final public class T {
         GenericFunctor = define("generic-functor"),
         SubFunctor = define("sub-functor"),
         TopFunctor = define("top-functor");
+
     /**
      * shortcut for define a template
      */
@@ -80,12 +83,30 @@ final public class T {
          * render and clear context
          */
         final public void render() {
-            StringWriter sw = new StringWriter();
-            template.merge(context, sw);
-            builder.append(sw.toString());
+            try {
+                template.merge(context, writer);
+            } catch (RuntimeException e) {
+                throw getRealThrowable(e);
+            }
 
             // clear context
             context = new VelocityContext();
+        }
+
+        /**
+         * find PrologCppException in e's cause chain, if not found, return e
+         */
+        private RuntimeException getRealThrowable(RuntimeException e) {
+            Throwable cur = e;
+            while(cur != null) {
+                if(cur instanceof PrologCppException) {
+                    return $.required(cur);
+                }
+
+                cur = cur.getCause();
+            }
+
+            return e;
         }
     }
 }

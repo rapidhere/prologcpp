@@ -5,7 +5,7 @@ struct Atom {};
 
 template <int... src>
 struct pack {
-    static constexpr int data[] = { src... };
+    static constexpr int data[sizeof...(src)] = { src... };
 };
 
 template <class T1, class T2>
@@ -25,7 +25,7 @@ template <int i, class... vals> struct at;
 
 template <int i, class head, class...rest>
 struct at<i, head, rest...> {
-    typedef typename v<i - 1, rest...>::t t;
+    typedef typename at<i - 1, rest...>::t t;
 };
 
 template <class head, class...rest>
