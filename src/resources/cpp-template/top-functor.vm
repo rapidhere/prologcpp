@@ -4,7 +4,6 @@
 
 template <#tHeader($fList, 'class T%d', $String.format("int _i=%d", $functor.getItemCount()))>
 struct #topFunctorId($functor) {
-#foreach($i in $fList)
     template<int which>
     #ol()
     using v = typename mergePack<
@@ -12,7 +11,6 @@ struct #topFunctorId($functor) {
         typename #subFunctorId($functor)<#tHeader($fList, 'T%d', '_i')>::template v<which>
     >::ret;
     #end
-#end
 
 };
 
