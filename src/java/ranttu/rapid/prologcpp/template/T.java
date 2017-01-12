@@ -5,10 +5,13 @@
  */
 package ranttu.rapid.prologcpp.template;
 
-import org.jtwig.JtwigModel;
-import org.jtwig.JtwigTemplate;
-import org.jtwig.environment.EnvironmentConfiguration;
-import org.jtwig.environment.EnvironmentConfigurationBuilder;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+
+import java.io.StringWriter;
 
 /**
  * templates collections
@@ -25,9 +28,6 @@ final public class T {
     // TODO: support multi-thread
     private static StringBuilder builder;
 
-    // ~ template environment
-    private static EnvironmentConfiguration configuration;
-
     public static void setBuilder(StringBuilder _builder) {
         builder = _builder;
     }
@@ -39,58 +39,53 @@ final public class T {
         GenericFunctor = define("generic-functor"),
         SubFunctor = define("sub-functor"),
         TopFunctor = define("top-functor");
-
-
-    private static void initConfig() {
-        configuration = EnvironmentConfigurationBuilder
-            .configuration()
-                .parser()
-                    .addonParserProviders().add(new AddonParserProvider()).and()
-                .and()
-                .render()
-                    .nodeRenders()
-                        .add(OnelineNode.class, new OnelineNodeRender())
-                    .and()
-                .and()
-            .build();
-    }
-
     /**
      * shortcut for define a template
      */
     private static RTemplate define(String templateName) {
-        if(configuration == null) {
-            initConfig();
+        if(! hasInit) {
+            Velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+            Velocity.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+            Velocity.setProperty("userdirective", OnelineDirective.class.getName());
+
+            Velocity.init();
+            hasInit = true;
         }
 
         return new RTemplate(templateName);
     }
 
+    /** whether velocity inited */
+    private static boolean hasInit = false;
+
     // ~~~ chain class
     public static class RTemplate {
-        private JtwigModel model;
-        private JtwigTemplate template;
+        private VelocityContext context;
+        private Template template;
 
         public RTemplate(String templateName) {
-            template = JtwigTemplate.classpathTemplate("cpp-template/" + templateName + ".twig",
-                configuration);
-            model = JtwigModel.newModel();
+            template = Velocity.getTemplate("cpp-template/" + templateName + ".vm");
+            context = new VelocityContext();
         }
 
         /**
-         * add value to model
+         * add value to context
          */
         final public RTemplate with(String key, Object value) {
-            model.with(key, value);
+            context.put(key, value);
             return this;
         }
 
         /**
-         * render and clear model
+         * render and clear context
          */
         final public void render() {
-            builder.append(template.render(model));
-            model = JtwigModel.newModel();
+            StringWriter sw = new StringWriter();
+            template.merge(context, sw);
+            builder.append(sw.toString());
+
+            // clear context
+            context = new VelocityContext();
         }
     }
 }

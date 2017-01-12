@@ -1,0 +1,23 @@
+#parse('cpp-template/M.vm')##
+#set($fSize = $functor.size - 1)##
+#set($fList = [0..$fSize])##
+
+template <#tHeader($fList, 'class T%d', 'int _i='$functor.getItemCount())>
+struct #topFunctorId($functor) {
+#foreach($i in $fList)
+    #ol()
+    typedef typename mergePack<
+        typename #subFunctorId($functor)<#tHeader($fList, 'T%d', '_i')>::v$i,
+        typename #topFunctorId($functor)<#tHeader($fList, 'T%d', '_i-1')>::v$i
+    >::ret v$i;
+    #end
+
+#end
+};
+
+template <#tHeader($fList, 'class T%d')>
+struct #topFunctorId($functor) <#tHeader($fList, 'T%d', '0')> {
+#foreach($i in $fList)
+    typedef pack<> v$i;
+#end
+};

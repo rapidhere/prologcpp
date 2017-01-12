@@ -1,3 +1,0 @@
-{% for i in [0..context.constants.size()-1] -%}
-template<> struct Atom<{{i}}> { static const int val = {{context.getConstant(i)}}; };
-{% endfor %}

@@ -1,0 +1,43 @@
+## common helper macros
+#ol()
+
+#set($String = "abc")
+
+#macro(subFunctorId $functor)
+#ol()
+    _${functor.id}_${functor.size}
+#end
+#end
+
+#macro(topFunctorId $functor)
+#ol()
+    ${functor.id}_${functor.size}
+#end
+#end
+
+#macro(tHeader $list $pattern $tail)
+#ol()
+    #foreach($i in $list)
+        $String.format($pattern, $i)
+        #if($foreach.hasNext)
+            ,
+        #end
+    #end
+    #if($!tail)
+        ,$tail
+    #end
+#end
+#end
+
+#macro(atom $constant, $context, $Q)
+#ol()
+    #if($!Q)
+        QueryAtom
+    #else
+        Atom<$context.getConstantIndex($constant.getInt())>
+    #end
+#end
+#end
+
+#end
+

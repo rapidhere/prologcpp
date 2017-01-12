@@ -19,9 +19,6 @@ import java.util.Map;
  * @version $id: CompilingContext.java, v0.1 2017/1/8 dongwei.dq Exp $
  */
 public class CompilingContext {
-    /** comment flag */
-    public boolean              commentOn = false;
-
     /** max atoms of a functor */
     public int                  maxAtoms  = 10;
 
@@ -63,6 +60,7 @@ public class CompilingContext {
     /**
      * get a constant index from context
      */
+    @SuppressWarnings("unused")
     public int getConstantIndex(Object constantValue) {
         return $.notNull(constants.get(constantValue));
     }
@@ -71,6 +69,7 @@ public class CompilingContext {
      * get constant by index
      * TODO: refine performance
      */
+    @SuppressWarnings("unused")
     public <T> T getConstant(int index) {
         for (Object constant : constants.keySet()) {
             if (constants.get(constant) == index) {
@@ -79,5 +78,12 @@ public class CompilingContext {
         }
 
         return $.shouldNotReach();
+    }
+
+    /**
+     * get the number of constants
+     */
+    public int getConstantSize() {
+        return constants.size();
     }
 }

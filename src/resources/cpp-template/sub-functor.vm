@@ -1,0 +1,22 @@
+#parse('cpp-template/M.vm')##
+
+template<>
+#ol()
+struct #subFunctorId($functor) <
+    #foreach($const in $args)
+        #atom($const, $context, $q[$foreach.index]),
+    #end
+    $functor.getItemCount()
+> {
+#end
+
+    template<int which>
+    #ol()
+    using v = typename at<which
+        #foreach($const in $args)
+        , pack<$context.getConstantIndex($const.getInt())>
+        #end
+    >::t;
+    #end
+
+};

@@ -1,0 +1,5 @@
+#set($size = $context.constantSize - 1)##
+
+#foreach($i in [0..$size])
+template<> struct Atom<$i> { static const int val = $context.getConstant($i); };
+#end
