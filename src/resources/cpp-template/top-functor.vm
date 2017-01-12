@@ -8,8 +8,8 @@ struct #topFunctorId($functor) {
     template<int which>
     #ol()
     using v = typename mergePack<
-        typename #subFunctorId($functor)<#tHeader($fList, 'T%d', '_i, which')>::v,
-        typename #topFunctorId($functor)<#tHeader($fList, 'T%d', '_i-1')>::v<which>
+        typename #topFunctorId($functor)<#tHeader($fList, 'T%d', '_i-1')>::template v<which>,
+        typename #subFunctorId($functor)<#tHeader($fList, 'T%d', '_i')>::template v<which>
     >::ret;
     #end
 #end
