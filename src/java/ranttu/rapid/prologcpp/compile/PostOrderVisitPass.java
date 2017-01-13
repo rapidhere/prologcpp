@@ -7,6 +7,8 @@ package ranttu.rapid.prologcpp.compile;
 
 import ranttu.rapid.prologcpp.parser.absyn.FactNode;
 import ranttu.rapid.prologcpp.parser.absyn.ProgramNode;
+import ranttu.rapid.prologcpp.parser.absyn.QueryNode;
+import ranttu.rapid.prologcpp.parser.absyn.StatementNode;
 
 /**
  * visit nodes in post-order on ast
@@ -31,8 +33,22 @@ abstract public class PostOrderVisitPass implements Pass {
         on(program);
     }
 
+    private void visit(StatementNode statement) {
+        if(statement.is(FactNode.class)) {
+            visit((FactNode) statement);
+        } else if(statement.is(QueryNode.class)) {
+            visit((QueryNode) statement);
+        }
+
+        on(statement);
+    }
+
     private void visit(FactNode fact) {
         on(fact);
+    }
+
+    private void visit(QueryNode query) {
+        on(query);
     }
 
     // ~ init
@@ -40,5 +56,7 @@ abstract public class PostOrderVisitPass implements Pass {
 
     // ~ visit entry
     protected void on(ProgramNode program) {}
+    protected void on(StatementNode statement) {}
     protected void on(FactNode fact) {}
+    protected void on(QueryNode query) {}
 }

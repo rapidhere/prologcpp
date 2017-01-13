@@ -17,17 +17,17 @@ import java.util.List;
  * @version $id: ProgramNode.java, v0.1 2017/1/8 dongwei.dq Exp $
  */
 public class ProgramNode extends AstNode {
-    private List<FactNode> body;
+    private List<StatementNode> body;
 
     public ProgramNode() {
         body = new ArrayList<>();
     }
 
-    public void add(FactNode fact) {
-        body.add(fact);
+    public void add(StatementNode statementNode) {
+        body.add(statementNode);
     }
 
-    public List<FactNode> getBody() {
+    public List<StatementNode> getBody() {
         return ImmutableList.copyOf(body);
     }
 

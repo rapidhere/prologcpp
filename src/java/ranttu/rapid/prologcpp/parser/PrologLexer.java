@@ -15,6 +15,7 @@ import ranttu.rapid.prologcpp.parser.token.Dot;
 import ranttu.rapid.prologcpp.parser.token.LeftParenthesis;
 import ranttu.rapid.prologcpp.parser.token.Number;
 import ranttu.rapid.prologcpp.parser.token.PrologString;
+import ranttu.rapid.prologcpp.parser.token.QueryToken;
 import ranttu.rapid.prologcpp.parser.token.RightParenthesis;
 import ranttu.rapid.prologcpp.parser.token.Symbol;
 import ranttu.rapid.prologcpp.parser.token.TokenPattern;
@@ -196,6 +197,7 @@ public class PrologLexer {
     public final static List<Class<? extends BasePrologToken>> TOKENS = ImmutableList.of(
         Symbol.class,
         Number.class,
+        QueryToken.class,
         Comma.class,
         LeftParenthesis.class,
         RightParenthesis.class,

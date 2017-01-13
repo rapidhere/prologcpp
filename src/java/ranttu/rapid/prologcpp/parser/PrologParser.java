@@ -5,14 +5,20 @@
  */
 package ranttu.rapid.prologcpp.parser;
 
+import ranttu.rapid.prologcpp.exp.QueryNotLast;
 import ranttu.rapid.prologcpp.exp.UnexpectedToken;
+import ranttu.rapid.prologcpp.parser.absyn.AtomNode;
 import ranttu.rapid.prologcpp.parser.absyn.FactNode;
+import ranttu.rapid.prologcpp.parser.absyn.FunctorNode;
 import ranttu.rapid.prologcpp.parser.absyn.ProgramNode;
+import ranttu.rapid.prologcpp.parser.absyn.QueryNode;
+import ranttu.rapid.prologcpp.parser.absyn.StatementNode;
 import ranttu.rapid.prologcpp.parser.token.BasePrologToken;
 import ranttu.rapid.prologcpp.parser.token.Comma;
 import ranttu.rapid.prologcpp.parser.token.Dot;
 import ranttu.rapid.prologcpp.parser.token.LeftParenthesis;
 import ranttu.rapid.prologcpp.parser.token.Number;
+import ranttu.rapid.prologcpp.parser.token.QueryToken;
 import ranttu.rapid.prologcpp.parser.token.RightParenthesis;
 import ranttu.rapid.prologcpp.parser.token.Symbol;
 
@@ -39,14 +45,82 @@ public class PrologParser {
 
     protected ProgramNode parseProgram() {
         ProgramNode program = new ProgramNode();
+        QueryNode query = null;
+
         while (lexer.hasNext()) {
-            program.add(parseFact());
+            StatementNode stm = parseStatement();
+
+            if(query != null) {
+                throw new QueryNotLast(query);
+            }
+
+            if(stm.is(QueryNode.class)) {
+                query = (QueryNode) stm;
+            }
+
+            program.add(parseStatement());
         }
 
         return program;
     }
 
-    protected FactNode parseFact() {
+    protected StatementNode parseStatement() {
+        BasePrologToken token = lexer.peekToken();
+
+        if(token.is(QueryToken.class)) {
+            return parseQuery();
+        } else {
+            return parseFactOrRule();
+        }
+    }
+
+    protected QueryNode parseQuery() {
+        QueryToken queryToken = lexer.nextToken(QueryToken.class);
+
+        QueryNode query = new QueryNode(queryToken);
+
+        while(true) {
+            query.addFunctorNode(parseFunctor());
+
+            BasePrologToken token = lexer.nextToken();
+
+            if(token.is(Dot.class)) {
+                break;
+            } else if(! token.is(Comma.class)) {
+                throw new UnexpectedToken(token);
+            }
+        }
+
+        return query;
+    }
+
+    protected FunctorNode parseFunctor() {
+        Symbol functorId = lexer.nextToken(Symbol.class);
+        FunctorNode functor = new FunctorNode(functorId);
+
+        // TODO: merge with parse fact
+        lexer.nextToken(LeftParenthesis.class);
+
+        while (true)  {
+            BasePrologToken token = lexer.nextToken();
+            functor.addAtom(new AtomNode(token));
+
+            token = lexer.nextToken();
+            if (token.is(RightParenthesis.class)) {
+                break;
+            } else if(! token.is(Comma.class)){
+                // or must be Comma
+                throw new UnexpectedToken(token);
+            }
+        }
+
+        // end with dot
+        lexer.nextToken(Dot.class);
+
+        return functor;
+    }
+
+    protected StatementNode parseFactOrRule() {
         Symbol factId = lexer.nextToken(Symbol.class);
         FactNode fact = new FactNode(factId);
 

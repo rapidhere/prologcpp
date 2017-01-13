@@ -27,8 +27,15 @@ abstract public class BasePrologToken<T> {
         this.value = castValue(raw);
     }
 
-    final public boolean is(Class<? extends BasePrologToken> clazz) {
-        return clazz.isAssignableFrom(getClass());
+    @SafeVarargs
+    final public boolean is(Class<? extends BasePrologToken>...clazz) {
+        for(Class<? extends BasePrologToken> c: clazz) {
+            if(c.isAssignableFrom(getClass())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @SuppressWarnings("unchecked")

@@ -5,6 +5,7 @@
  */
 package ranttu.rapid.prologcpp.parser.absyn;
 
+import com.google.common.collect.ImmutableList;
 import ranttu.rapid.prologcpp.parser.token.Number;
 import ranttu.rapid.prologcpp.parser.token.Symbol;
 
@@ -17,7 +18,7 @@ import java.util.List;
  * @author rapidhere@gmail.com
  * @version $id: FactNode.java, v0.1 2017/1/8 dongwei.dq Exp $
  */
-public class FactNode extends AstNode {
+public class FactNode extends StatementNode {
     private Symbol       factId;
 
     private List<Number> factArgument;
@@ -32,7 +33,7 @@ public class FactNode extends AstNode {
     }
 
     public List<Number> getArguments() {
-        return factArgument;
+        return ImmutableList.copyOf(factArgument);
     }
 
     public Symbol getFactId() {

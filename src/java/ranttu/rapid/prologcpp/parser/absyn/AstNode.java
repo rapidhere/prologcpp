@@ -24,4 +24,11 @@ abstract public class AstNode {
      * get the column of current node
      */
     public abstract int getColumn();
+
+    /**
+     * test node is of such type
+     */
+    final public boolean is(Class<? extends AstNode> clazz) {
+        return clazz.isAssignableFrom(getClass());
+    }
 }

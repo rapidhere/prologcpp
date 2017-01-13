@@ -8,7 +8,9 @@ package ranttu.rapid.prologcpp.compile.pass;
 import ranttu.rapid.prologcpp.compile.PostOrderVisitPass;
 import ranttu.rapid.prologcpp.compile.struct.Functor;
 import ranttu.rapid.prologcpp.exp.TooManyAtoms;
+import ranttu.rapid.prologcpp.parser.absyn.AtomNode;
 import ranttu.rapid.prologcpp.parser.absyn.FactNode;
+import ranttu.rapid.prologcpp.parser.absyn.QueryNode;
 import ranttu.rapid.prologcpp.parser.token.Number;
 
 /**
@@ -33,5 +35,11 @@ public class Collect extends PostOrderVisitPass {
         for(Number number: fact.getArguments()) {
             context.addConstant(number.getInt());
         }
+    }
+
+    @Override
+    protected void on(QueryNode query) {
+        // collect constant
+        // TODO
     }
 }
