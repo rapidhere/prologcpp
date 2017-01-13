@@ -27,6 +27,10 @@ public class AtomNode extends AstNode {
         this.token = token;
     }
 
+    public int getInt() {
+        return ((Number)token).getInt();
+    }
+
     @Override
     public int getLineNo() {
         return token.getLineNo();

@@ -37,6 +37,10 @@ public class FunctorNode extends AstNode {
         return ImmutableList.copyOf(atoms);
     }
 
+    public int getSize() {
+        return atoms.size();
+    }
+
     @Override
     public int getLineNo() {
         return functorId.getLineNo();

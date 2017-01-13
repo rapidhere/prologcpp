@@ -5,7 +5,9 @@
  */
 package ranttu.rapid.prologcpp.compile;
 
+import ranttu.rapid.prologcpp.parser.absyn.AtomNode;
 import ranttu.rapid.prologcpp.parser.absyn.FactNode;
+import ranttu.rapid.prologcpp.parser.absyn.FunctorNode;
 import ranttu.rapid.prologcpp.parser.absyn.ProgramNode;
 import ranttu.rapid.prologcpp.parser.absyn.QueryNode;
 import ranttu.rapid.prologcpp.parser.absyn.StatementNode;
@@ -48,7 +50,17 @@ abstract public class PostOrderVisitPass implements Pass {
     }
 
     private void visit(QueryNode query) {
+        query.getFunctors().forEach(this::visit);
         on(query);
+    }
+
+    private void visit(FunctorNode functor) {
+        functor.getAtoms().forEach(this::visit);
+        on(functor);
+    }
+
+    private void visit(AtomNode atom) {
+        on(atom);
     }
 
     // ~ init
@@ -59,4 +71,6 @@ abstract public class PostOrderVisitPass implements Pass {
     protected void on(StatementNode statement) {}
     protected void on(FactNode fact) {}
     protected void on(QueryNode query) {}
+    protected void on(FunctorNode functor) {}
+    protected void on(AtomNode atom) {}
 }

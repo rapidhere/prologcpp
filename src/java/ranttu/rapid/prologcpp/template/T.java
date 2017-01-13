@@ -40,7 +40,8 @@ final public class T {
         ConstantTable = define("constant-table"),
         GenericFunctor = define("generic-functor"),
         SubFunctor = define("sub-functor"),
-        TopFunctor = define("top-functor");
+        TopFunctor = define("top-functor"),
+        QueryMain = define("query-main");
 
     /**
      * shortcut for define a template

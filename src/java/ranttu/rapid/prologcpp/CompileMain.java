@@ -16,6 +16,6 @@ import ranttu.rapid.prologcpp.compile.Prolog2CppCompiler;
 public class CompileMain {
     // ~ tmp test
     public static void main(String args[]) {
-        System.out.println(new Prolog2CppCompiler().compile("f(15, 16).f(18, 19)."));
+        System.out.println(new Prolog2CppCompiler().compile("f(1).\n?- f(1)."));
     }
 }

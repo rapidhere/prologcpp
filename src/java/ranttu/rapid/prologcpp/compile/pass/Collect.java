@@ -10,6 +10,7 @@ import ranttu.rapid.prologcpp.compile.struct.Functor;
 import ranttu.rapid.prologcpp.exp.TooManyAtoms;
 import ranttu.rapid.prologcpp.parser.absyn.AtomNode;
 import ranttu.rapid.prologcpp.parser.absyn.FactNode;
+import ranttu.rapid.prologcpp.parser.absyn.FunctorNode;
 import ranttu.rapid.prologcpp.parser.absyn.QueryNode;
 import ranttu.rapid.prologcpp.parser.token.Number;
 
@@ -38,8 +39,7 @@ public class Collect extends PostOrderVisitPass {
     }
 
     @Override
-    protected void on(QueryNode query) {
-        // collect constant
-        // TODO
+    protected void on(AtomNode atom) {
+        context.addConstant(atom.getInt());
     }
 }

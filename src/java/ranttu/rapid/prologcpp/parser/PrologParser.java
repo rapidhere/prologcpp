@@ -58,7 +58,7 @@ public class PrologParser {
                 query = (QueryNode) stm;
             }
 
-            program.add(parseStatement());
+            program.add(stm);
         }
 
         return program;
@@ -113,9 +113,6 @@ public class PrologParser {
                 throw new UnexpectedToken(token);
             }
         }
-
-        // end with dot
-        lexer.nextToken(Dot.class);
 
         return functor;
     }

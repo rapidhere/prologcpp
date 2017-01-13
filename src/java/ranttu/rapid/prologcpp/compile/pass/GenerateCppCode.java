@@ -5,6 +5,9 @@
  */
 package ranttu.rapid.prologcpp.compile.pass;
 
+import ranttu.rapid.prologcpp.$;
+import ranttu.rapid.prologcpp.parser.absyn.FunctorNode;
+import ranttu.rapid.prologcpp.parser.absyn.QueryNode;
 import ranttu.rapid.prologcpp.template.T;
 import ranttu.rapid.prologcpp.compile.PostOrderVisitPass;
 import ranttu.rapid.prologcpp.compile.struct.Functor;
@@ -40,13 +43,31 @@ public class GenerateCppCode extends PostOrderVisitPass {
 
     @Override
     protected void on(ProgramNode program) {
+        // get result
+        context.compiledCode = writer.toString();
+    }
+
+    @Override
+    protected void on(QueryNode query) {
+        // query will be the last statement in program
         // generate true functors
         for(Functor functor: context.functors.values()) {
             T.TopFunctor.with("functor", functor).render();
         }
 
-        // get result
-        context.compiledCode = writer.toString();
+
+        // TODO: refine
+        // TODO: only support one query now
+        $.should(query.getFunctors().size() == 1, "currently only support 1-atom query");
+
+        FunctorNode functorNode = query.getFunctors().get(0);
+        Functor functor = context.getFunctor(functorNode.getFunctorId().getValue(), functorNode.getSize());
+
+        T.QueryMain
+            .with("functorNode", functorNode)
+            .with("functor", functor)
+            .with("context", context)
+            .render();
     }
 
     @Override

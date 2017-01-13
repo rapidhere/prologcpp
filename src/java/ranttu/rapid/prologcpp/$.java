@@ -33,6 +33,14 @@ final public class $ {
         return o;
     }
 
+    public static <T> T should(boolean b, String message) {
+        if(! b) {
+            throw new AssertError(message);
+        }
+
+        return null;
+    }
+
     public static <T> T shouldNotReach() {
         throw new AssertError("should not reach this");
     }

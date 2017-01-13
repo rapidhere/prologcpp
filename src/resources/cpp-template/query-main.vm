@@ -1,0 +1,20 @@
+#parse('cpp-template/M.vm')##
+
+\#include <iostream>
+
+int main() {
+    #ol()
+    std::cout << Atom<
+        #topFunctorId($functor)<
+            #foreach($a in $functorNode.getAtoms())
+                #atom($a, $context)
+                #if($foreach.hasNext)
+                    ,
+                #end
+            #end
+        >::v<0>::data[0]
+    >::val << std::endl;
+    #end
+
+    return 0;
+}
